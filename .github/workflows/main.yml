@@ -17,11 +17,10 @@ jobs:
       - name: Build Unity Project for Windows
         uses: akiojin/unity-build-github-action@v3
         with:
-          build-target: 'Win64'
+          build-target: 'win'               # ✅ Correct – not 'Win64'
           project-directory: ${{ github.workspace }}
           output-directory: ${{ runner.temp }}/Unity
           output-name: 'MyGame-Windows'
-          # Tell the action to call the static method 'PerformBuild' in your script
           execute-method: 'UnityBuildScript.PerformBuild'
 
       - name: Upload Build Artifact
