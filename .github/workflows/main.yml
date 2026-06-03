@@ -1,45 +1,29 @@
-name: Build Unity Project (WebGL + Windows)
+name: Build Windows Version
 
 on:
   push:
     branches: [ "main" ]
   pull_request:
     branches: [ "main" ]
-  workflow_dispatch:   # <-- adds manual trigger
+  workflow_dispatch: # Allows you to run this workflow manually from the Actions tab
 
 jobs:
-  build:
-    name: Build for ${{ matrix.targetPlatform }}
+  build-windows:
     runs-on: ubuntu-latest
-    strategy:
-      fail-fast: false
-      matrix:
-        targetPlatform:
-          - StandaloneWindows64
-          - WebGL
-
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-        with:
-          lfs: true
 
-      - name: Cache Library folder
-        uses: actions/cache@v3
+      - name: Build Unity Project for Windows
+        uses: akiojin/unity-build-github-action@v3
         with:
-          path: Library
-          key: Library-${{ matrix.targetPlatform }}
-          restore-keys: |
-            Library-
+          build-target: 'Win64'            # Build target for 64-bit Windows
+          project-directory: ${{ github.workspace }}
+          output-directory: ${{ runner.temp }}/Unity
+          output-name: 'MyGame-Windows'    # Base name for the output .zip file
 
-      - name: Build project
-        uses: game-ci/unity-builder@v5
-        with:
-          targetPlatform: ${{ matrix.targetPlatform }}
-          allowDirtyBuild: true
-
-      - name: Upload build
+      - name: Upload Build Artifact
         uses: actions/upload-artifact@v4
         with:
-          name: Build-${{ matrix.targetPlatform }}
-          path: build/${{ matrix.targetPlatform }}
+          name: windows-build
+          path: ${{ runner.temp }}/Unity/*.zip
