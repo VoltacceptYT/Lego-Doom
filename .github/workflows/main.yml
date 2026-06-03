@@ -17,7 +17,7 @@ jobs:
       - name: Build Unity Project for Windows
         uses: akiojin/unity-build-github-action@v3
         with:
-          build-target: 'Win64'            # Build target for 64-bit Windows
+          build-target: 'Windows'            # Build target for 64-bit Windows
           project-directory: ${{ github.workspace }}
           output-directory: ${{ runner.temp }}/Unity
           output-name: 'MyGame-Windows'    # Base name for the output .zip file
