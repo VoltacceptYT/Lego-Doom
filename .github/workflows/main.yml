@@ -16,10 +16,10 @@ jobs:
 
       # 1. Install Unity using webbertakken/unity-setup (works, even if deprecated)
       - name: Install Unity
-        uses: webbertakken/unity-setup@v3
+        uses: RageAgainstThePixel/unity-setup@v2.6.0
         with:
-          version: 6000.0.47f1
-          components: Windows   # Standalone Windows build support
+          unity-version: 6000.0.47f1
+          modules: Windows   # Standalone Windows build support
 
       # 2. Build using your original action
       - name: Build Unity Project for Windows
