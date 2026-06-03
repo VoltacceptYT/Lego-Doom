@@ -14,11 +14,31 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
+      # 1. Install the exact Unity version (6000.0.47f1)
+      - name: Install Unity
+        uses: game-ci/unity-setup@v2
+        with:
+          version: 6000.0.47f1
+          targetPlatforms: StandaloneWindows64
+
+      # 2. Activate Unity license (personal or pro)
+      - name: Activate Unity License
+        uses: game-ci/unity-activate@v2
+        with:
+          unityUsername: ${{ secrets.UNITY_EMAIL }}
+          unityPassword: ${{ secrets.UNITY_PASSWORD }}
+          unitySerial: ${{ secrets.UNITY_SERIAL }}
+        env:
+          # Optional: for personal licenses, set the following to avoid prompts
+          UNITY_THISISAPERSONAL: "YES"
+
+      # 3. Build using your original action
       - name: Build Unity Project for Windows
         uses: akiojin/unity-build-github-action@v3
         with:
           build-target: 'Win64'
 
+      # 4. Upload artifact
       - name: Upload Build Artifact
         uses: actions/upload-artifact@v4
         with:
