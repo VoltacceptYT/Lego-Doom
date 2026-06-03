@@ -5,7 +5,7 @@ on:
     branches: [ "main" ]
   pull_request:
     branches: [ "main" ]
-  workflow_dispatch: # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
 
 jobs:
   build-windows:
@@ -17,10 +17,12 @@ jobs:
       - name: Build Unity Project for Windows
         uses: akiojin/unity-build-github-action@v3
         with:
-          build-target: 'Windows'            # Build target for 64-bit Windows
+          build-target: 'Win64'
           project-directory: ${{ github.workspace }}
           output-directory: ${{ runner.temp }}/Unity
-          output-name: 'MyGame-Windows'    # Base name for the output .zip file
+          output-name: 'MyGame-Windows'
+          # Tell the action to call the static method 'PerformBuild' in your script
+          execute-method: 'UnityBuildScript.PerformBuild'
 
       - name: Upload Build Artifact
         uses: actions/upload-artifact@v4
